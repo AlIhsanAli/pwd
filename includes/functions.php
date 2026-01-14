@@ -103,7 +103,16 @@ function addCourse($conn, $code, $name, $sks, $lecturer_id) {
 
 // Enroll student in course
 function enrollStudent($conn, $student_id, $course_id, $semester) {
-    $stmt = $conn->prepare("INSERT INTO pendaftaran (id_mahasiswa, id_mata_kuliah, semester) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE id=id");
+    // Check if already enrolled
+    $check_stmt = $conn->prepare("SELECT id FROM pendaftaran WHERE id_mahasiswa = ? AND id_mata_kuliah = ? AND semester = ?");
+    $check_stmt->bind_param("iis", $student_id, $course_id, $semester);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+    if ($check_result->num_rows > 0) {
+        return false; // Already enrolled
+    }
+
+    $stmt = $conn->prepare("INSERT INTO pendaftaran (id_mahasiswa, id_mata_kuliah, semester) VALUES (?, ?, ?)");
     $stmt->bind_param("iis", $student_id, $course_id, $semester);
     return $stmt->execute();
 }
