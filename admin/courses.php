@@ -20,6 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (isset($_POST['delete'])) {
         $id = $_POST['id'];
         $stmt = $conn->prepare("DELETE FROM mata_kuliah WHERE id = ?");
+
+        // Delete course
+        $stmt = $conn->prepare("DELETE FROM courses WHERE id = ?");
         $stmt->bind_param("i", $id);
         if ($stmt->execute()) {
             $message = 'Course deleted successfully.';

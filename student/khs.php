@@ -34,8 +34,6 @@ $gpa = calculateGPA($enrollments);
         <a href="../pdf/khs_pdf.php" target="_blank" class="btn btn-danger mb-3">
             Print KHS (PDF)
         </a>
-
-
         <table class="table table-striped">
             <thead>
                 <tr>
